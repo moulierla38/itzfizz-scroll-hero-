@@ -1,2 +1,180 @@
-# itzfizz-scroll-hero-
-A scroll-driven hero section featuring a letter-spaced headline, animated impact metrics, and a visual element that responds smoothly to scroll progress. Built using HTML, Tailwind CSS, and GSAP with a focus on performance, fluid motion, and clean UI interactions.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Itzfizz · Scroll Hero Animation</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Fonts & Base Styles -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap');
+    * { font-family: 'Inter', system-ui, sans-serif; }
+
+    body {
+      background: #0b1a2a;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    .hero {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 3rem;
+      background: linear-gradient(135deg, #0f212f, #1c3343);
+    }
+
+    .headline-letter {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .stat-item {
+      opacity: 0;
+      transform: translateY(25px);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 1.5rem;
+      padding: 1rem 1.75rem;
+      backdrop-filter: blur(6px);
+    }
+
+    .scroll-object {
+      position: absolute;
+      right: 5%;
+      bottom: 15%;
+      width: 380px;
+      height: 200px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80"><path fill="%23ffcd7a" d="M20 45 L40 20 L130 20 L160 45 L160 60 L140 65 L110 65 L90 60 L50 60 L30 65 L20 60 Z" /><circle fill="%23222" cx="60" cy="65" r="12"/><circle fill="%23222" cx="130" cy="65" r="12"/><circle fill="%23555" cx="60" cy="65" r="7"/><circle fill="%23555" cx="130" cy="65" r="7"/></svg>') no-repeat center;
+      background-size: contain;
+      filter: drop-shadow(0 20px 20px rgba(0,0,0,0.4));
+      will-change: transform;
+    }
+
+    .spacer {
+      height: 150vh;
+      background: #1e2b39;
+    }
+
+    .below {
+      min-height: 100vh;
+      background: #11181f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HERO SECTION -->
+  <section class="hero relative">
+    <div class="max-w-3xl z-10">
+      <!-- Headline -->
+      <h1 class="text-5xl md:text-7xl font-light tracking-[0.35em] mb-10">
+        <span class="headline-letter">W</span>
+        <span class="headline-letter">E</span>
+        <span class="headline-letter">L</span>
+        <span class="headline-letter">C</span>
+        <span class="headline-letter">O</span>
+        <span class="headline-letter">M</span>
+        <span class="headline-letter">E</span>
+        <span class="inline-block w-6"></span>
+        <span class="headline-letter">I</span>
+        <span class="headline-letter">T</span>
+        <span class="headline-letter">Z</span>
+        <span class="headline-letter">F</span>
+        <span class="headline-letter">I</span>
+        <span class="headline-letter">Z</span>
+        <span class="headline-letter">Z</span>
+      </h1>
+
+      <!-- Stats -->
+      <div class="flex flex-wrap gap-5">
+        <div class="stat-item">
+          <div class="text-3xl font-bold text-amber-300">87%</div>
+          <div class="text-sm opacity-80">faster load</div>
+        </div>
+        <div class="stat-item">
+          <div class="text-3xl font-bold text-amber-300">+142%</div>
+          <div class="text-sm opacity-80">engagement</div>
+        </div>
+        <div class="stat-item">
+          <div class="text-3xl font-bold text-amber-300">2.4x</div>
+          <div class="text-sm opacity-80">conversion</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll Visual -->
+    <div class="scroll-object" id="car"></div>
+  </section>
+
+  <!-- SCROLL SPACE -->
+  <div class="spacer"></div>
+
+  <!-- CONTENT BELOW -->
+  <section class="below">
+    <div>
+      <h2 class="text-4xl font-light mb-4">Continue Exploring</h2>
+      <p class="text-white/60 text-lg">
+        Scroll back up to see the hero react smoothly to scroll progress.
+      </p>
+    </div>
+  </section>
+
+  <!-- GSAP LOGIC -->
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Intro animations
+    gsap.to('.headline-letter', {
+      opacity: 1,
+      y: 0,
+      duration: 1.2,
+      stagger: 0.05,
+      ease: 'power3.out',
+      delay: 0.2
+    });
+
+    gsap.to('.stat-item', {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      stagger: 0.15,
+      ease: 'back.out(1.4)',
+      delay: 0.6
+    });
+    gsap.set('#car', { x: 120, y: -10, rotation: -5, scale: 0.95 });
+
+    gsap.to('#car', {
+      scrollTrigger: {
+        trigger: '.spacer',
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 2,
+        invalidateOnRefresh: true
+      },
+      x: -320,
+      y: 60,
+      rotation: 18,
+      scale: 1.35,
+      ease: 'power1.out'
+    });
+  </script>
+
+</body>
+</html>
